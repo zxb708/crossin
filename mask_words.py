@@ -20,13 +20,12 @@ def gen_files():
 
 def find_mask_words():
     oldstr = instr = input("please enter some words:")
-
     data = ""
     with open("words.txt",encoding="utf-8") as f:
         data = f.readlines()
     for i in range(len(data)):
         data[i] = data[i].strip()
-        instr = re.sub(data[i], '*' * len(data[i]), instr, re.IGNORECASE)
+        instr = re.sub(data[i], '*' * len(data[i]), instr, flags=re.IGNORECASE)
     print("before replace:" + oldstr)
     print("after replace:" + instr)
 
