@@ -9,27 +9,26 @@
 #验证这个方法时，从控制台输入待检测文字，调用方法处理，输出处理后的文字。
 #主要涉及内容：文件读取、字符串处理、函数调用
 
-
+import re
 def gen_files():
     with open("words.txt", "w",encoding="utf-8") as f:
-        f.write("张小波")
-        f.write("秋高气爽")
-        f.write("don't show these words")
+        f.write("张小波\n")
+        f.write("秋高气爽\n")
+        f.write("don't show these words\n")
+        f.write("python\n")
+        f.write("hard")
 
 def find_mask_words():
-    instr = input("please enter some words:")
+    oldstr = instr = input("please enter some words:")
 
     data = ""
     with open("words.txt",encoding="utf-8") as f:
-        data = f.read()
-    lst = []
-    for s in instr:
-        if s in data:
-            lst.append(s)
-        else:
-            lst.append('*')
-    newstr = ''.join(lst)
-    print( newstr)
+        data = f.readlines()
+    for i in range(len(data)):
+        data[i] = data[i].strip()
+        instr = re.sub(data[i], '*' * len(data[i]), instr, re.IGNORECASE)
+    print("before replace:" + oldstr)
+    print("after replace:" + instr)
 
 if __name__ == '__main__':
     gen_files()
