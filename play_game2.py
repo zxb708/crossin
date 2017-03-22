@@ -23,9 +23,9 @@ def guess_num():
         try:
             guess_val = int(guess_val)
             if guess_val < answer:
-                print("太小了")
+                print("太小了\n")
             elif guess_val > answer:
-                print("太大了")
+                print("太大了\n")
             else:
                 print("猜中了!答案就是%s" % guess_val)
                 break
@@ -34,10 +34,27 @@ def guess_num():
     return cnt
 
 def play(username, saved_file = 'guess.dat'):
-    print("欢迎回来%s，祝你游戏愉快！" % username)
-    reps = 0
-    total_cnt = 0
-    best_cnt = 0
+    new_user = True
+    new_user_data = ""
+    if os.path.exists(saved_file):
+        with open(saved_file, 'r', encoding='utf-8') as f:
+            for line in f.readlines():
+                if username in line:
+                    new_user = False
+                    new_user_data = line
+                    break
+    if not new_user:
+        print("欢迎回来 %s ，祝你游戏愉快！" % username)
+    else:
+        print("欢迎新用户 %s ，祝你游戏愉快！" % username)
+
+    if not new_user:
+        data = new_user_data.split()
+        reps = int(data[1])
+        total_cnt = int(data[2])
+        best_cnt = int(data[3])
+    else:
+        reps, total_cnt, best_cnt = (0, 0, 0)
 
     while True:
         cur_cnt = guess_num()
@@ -62,31 +79,28 @@ def play(username, saved_file = 'guess.dat'):
     #第一个玩家
     if not os.path.exists(saved_file):
         with open(saved_file, 'w', encoding='utf-8') as f:
-            f.write("%s %s %s\n" % (username, reps, int(total_cnt/reps + 0.5)))
+            f.write("%s %s % %s\n" % (username, reps, total_cnt, best_cnt, int(total_cnt/reps + 0.5)))
     else:
         #更新保存数据的文件
-        update_saved_file(saved_file, username, reps, total_cnt)
+        update_saved_file(saved_file, username, reps, total_cnt, best_cnt)
 
-def update_saved_file(saved_file, username, reps, total_cnt):
+def update_saved_file(saved_file, username, reps, total_cnt, best_cnt):
     old_file = open(saved_file, 'r', encoding='utf-8')
     new_file = open(saved_file + '.update', 'w', encoding='utf-8')
 
     flag = False
     for line in old_file.readlines():
         data = line.split()
-        if len(data) == 3:
-            if data[0].strip() != username:
+        if len(data) == 5:
+            #if data[0].strip() != username:
+            if username not in line:
                 new_file.write(line)
             else:
-                old_reps = int(data[1])
-                old_avg = int(data[2])
-
-                new_reps, new_avg = old_reps+reps, int((total_cnt + old_reps*old_avg) / (old_reps + reps) + 0.5)
-                new_file.write("%s %s %s\n" % (username, new_reps, new_avg))
+                new_file.write("%s %s %s %s %s\n" % (username, reps, total_cnt, best_cnt,  int(total_cnt/reps + 0.5)))
                 flag = True
     old_file.close()
     if not flag:
-        new_file.write("%s %s %s\n" % (username, reps, int(total_cnt / reps + 0.5)))
+        new_file.write("%s %s %s %s %s\n" % (username, reps, total_cnt, best_cnt, int(total_cnt / reps + 0.5)))
     new_file.close()
     #替换文件
     os.replace(saved_file + ".update", saved_file)
