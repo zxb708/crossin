@@ -20,10 +20,11 @@ def load_score(file='report.txt'):
     score_list = []
     with open(file,'r',encoding='utf-8') as f:
         for line in f.readlines():
-            data = line.split()
-            data = list(data[0]) + [int(x) for x in data[1:]]
-            if data is not None:
-                score_list.append(data)
+            data = line.split(" ")
+            #data = list(data[0]) + [int(x) for x in data[1:]]
+            tmp_list = [int(x) for x in data[1:]]
+            tmp_list.insert(0, data[0])
+            score_list.append(tmp_list)
     return score_list
 
 def cal(score_list):
@@ -47,11 +48,7 @@ def cal(score_list):
         avg_list[i] = avg_list[i] / stu_num
     avg_list.append(avg_list[-1]/9)
 
-    #print("before sort")
-    #print(score_list)
     score_list.sort(key=lambda x: x[-1], reverse=True)
-    #print("after sort")
-    #print(score_list)
     return (score_list, avg_list)
 
 if __name__ == '__main__':
