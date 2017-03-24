@@ -18,7 +18,6 @@ def guess_num():
     cnt = 0
     while True:
         guess_val = input("请输入100以内的数字;")
-        print("第 %s 次" % cnt)
         try:
             guess_val = int(guess_val)
             ##对输入值的范围进行了判断，如果输入值不在[0,100]区间内，则重新输入，当次不计入统计
@@ -26,6 +25,7 @@ def guess_num():
                 print("请输入0到100之间的数字，你输入的值为：%s，超出了范围！" % guess_val)
                 continue
             cnt += 1
+            print("第 %s 次" % cnt)
             if guess_val < answer:
                 print("太小了\n")
             elif guess_val > answer:
