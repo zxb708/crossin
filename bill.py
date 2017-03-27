@@ -176,7 +176,7 @@ def main():
             if service_id == "1" or service_id == "2" or service_id == "3":
                 break
             else:
-                print("请输入正确的服务类型（1 or 2）")
+                print("请输入正确的服务类型（1 查账；2 记账；3 退出程序）")
         if service_id == "1":
             #查账逻辑
             query_bill()
