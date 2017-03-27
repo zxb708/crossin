@@ -17,7 +17,19 @@ def get_input_value(prompt="请输入参数值",func = float):
     #返回获取到的输入值
     return input_value
 
+def init_bill():
+    balance_file = "balance.txt"
+    if not os.path.exists(balance_file):
+        with open(balance_file, "w", encoding="utf-8") as f:
+            f.write("结算日期\t资产/W\t负债/W\t净资产/W\n")
+            f.write("%s\t%s\t%s\t%s\n" % (0, 0, 0, 0))
+    accout_file = "account.txt"
+    if not os.path.exists(accout_file):
+        with open(accout_file, "w", encoding="utf-8") as f:
+            f.write("交易对象\t收入/W\t支出/W\t应收账款/W\t应出账款/W\t交易日期\n")
+
 def query_bill():
+    init_bill()
     print("查账模式")
     print("1.查询最近十笔交易记录")
     print("2.查询与某公司交易往来")
@@ -154,22 +166,25 @@ def load_balance_data():
     return cur_balance, cur_debt
 
 def main():
-    print("1.查账；2.记账")
-
-    service_id = "0"
-    while True:
-        service_id = input("请选择服务：")
-        service_id = service_id.strip()
-        if service_id == "1" or service_id == "2":
-            break
-        else:
-            print("请输入正确的服务类型（1 or 2）")
-    if service_id == "1":
-        #查账逻辑
-        query_bill()
-    else:
-        #记账过程
-        update_bill()
+    out_flag = True
+    while out_flag:
+        print("1.查账；2.记账；3.退出程序")
+        service_id = "0"
+        while True:
+            service_id = input("请选择服务：")
+            service_id = service_id.strip()
+            if service_id == "1" or service_id == "2" or service_id == "3":
+                break
+            else:
+                print("请输入正确的服务类型（1 or 2）")
+        if service_id == "1":
+            #查账逻辑
+            query_bill()
+        elif service_id == "2":
+            #记账过程
+            update_bill()
+        elif service_id == "3":
+            out_flag = False
 
 if __name__ == '__main__':
     main()
