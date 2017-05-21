@@ -9,10 +9,6 @@
 
 class GoldMedal(object):
 
-    goldNum = 0
-    silverNum = 0
-    bronzeNum = 0
-    countryName = 0
     def __init__(self, countryName, goldNum=0, silverNum=0, bronzeNum=0):
         self.goldNum = goldNum
         self.silverNum = silverNum
